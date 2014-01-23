@@ -1,6 +1,9 @@
-var express = require('express'), app = express.createServer();
-var jade = require('jade');
-var io = require('socket.io').listen(app);
+var express = require('express'),
+    app = express(),
+    http = require('http'),
+    server = http.createServer(app),
+    jade = require('jade'),
+    io = require('socket.io').listen(server);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set("view options", { layout: false });
@@ -10,7 +13,7 @@ app.configure(function() {
 app.get('/', function(req, res){
   res.render('home.jade');
 });
-app.listen(3000);
+server.listen(3000);
 io.sockets.on('connection', function (socket) {
 	socket.on('setPseudo', function (data) {
 		socket.set('pseudo', data);
